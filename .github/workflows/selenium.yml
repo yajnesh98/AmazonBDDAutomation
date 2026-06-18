@@ -1,0 +1,36 @@
+name: Amazon - Selenium Automation Tests
+
+on:
+  push:
+    branches:
+      - Master
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Build Project
+        run: mvn clean compile
+
+      - name: Run Tests
+        run: mvn test
+
+      - name: Upload Test Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: TestReports
+          path: target/surefire-reports
